@@ -130,6 +130,7 @@ export default function StoreManageProducts() {
                         <th className="px-4 py-3">Name</th>
                         <th className="px-4 py-3 hidden lg:table-cell">SKU</th>
                         <th className="px-4 py-3 hidden md:table-cell">Categories</th>
+                        <th className="px-4 py-3 hidden xl:table-cell">Tags</th>
                         <th className="px-4 py-3 hidden md:table-cell">Description</th>
                         <th className="px-4 py-3 hidden md:table-cell">MRP</th>
                         <th className="px-4 py-3">Price</th>
@@ -161,6 +162,19 @@ export default function StoreManageProducts() {
                                     <span className="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">
                                         {categoryMap[product.category] || product.category}
                                     </span>
+                                ) : (
+                                    <span className="text-slate-400">-</span>
+                                )}
+                            </td>
+                            <td className="px-4 py-3 hidden xl:table-cell">
+                                {product.tags && product.tags.length > 0 ? (
+                                    <div className="flex flex-wrap gap-1 max-w-xs">
+                                        {product.tags.map((tag, idx) => (
+                                            <span key={idx} className="inline-block px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
                                 ) : (
                                     <span className="text-slate-400">-</span>
                                 )}

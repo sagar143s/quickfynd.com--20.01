@@ -94,6 +94,7 @@ export default function ProductForm({ product = null, onClose, onSubmitSuccess }
         badges: [],
         imageAspectRatio: '1:1',
         category: product?.category?._id || product?.category || "",
+        tags: [],
         ...(product || {})
     });
     //
@@ -114,6 +115,7 @@ export default function ProductForm({ product = null, onClose, onSubmitSuccess }
     ])
     const [reviewInput, setReviewInput] = useState({ name: "", rating: 5, comment: "", image: null })
     const [loading, setLoading] = useState(false)
+    const [tagInput, setTagInput] = useState('')
 
     // FBT (Frequently Bought Together) state
     const [enableFBT, setEnableFBT] = useState(false)
@@ -803,6 +805,63 @@ export default function ProductForm({ product = null, onClose, onSubmitSuccess }
                 <div>
                     <label className="block text-sm font-medium mb-1">Short Description</label>
                     <input name="shortDescription" value={productInfo.shortDescription || ''} onChange={onChangeHandler} className="w-full border rounded px-3 py-2" placeholder="One-liner overview" />
+                </div>
+
+                {/* Tags */}
+                <div>
+                    <label className="block text-sm font-medium mb-2">Product Tags</label>
+                    <div className="flex gap-2 mb-2">
+                        <input
+                            type="text"
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    const trimmedTag = tagInput.trim();
+                                    if (trimmedTag && !productInfo.tags.includes(trimmedTag)) {
+                                        setProductInfo(prev => ({ ...prev, tags: [...prev.tags, trimmedTag] }));
+                                        setTagInput('');
+                                    }
+                                }
+                            }}
+                            className="flex-1 border rounded px-3 py-2"
+                            placeholder="Type a tag and press Enter (e.g., organic, vegan, trending)"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const trimmedTag = tagInput.trim();
+                                if (trimmedTag && !productInfo.tags.includes(trimmedTag)) {
+                                    setProductInfo(prev => ({ ...prev, tags: [...prev.tags, trimmedTag] }));
+                                    setTagInput('');
+                                }
+                            }}
+                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                        >
+                            Add Tag
+                        </button>
+                    </div>
+                    {productInfo.tags && productInfo.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                            {productInfo.tags.map((tag, idx) => (
+                                <span
+                                    key={idx}
+                                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                                >
+                                    {tag}
+                                    <button
+                                        type="button"
+                                        onClick={() => setProductInfo(prev => ({ ...prev, tags: prev.tags.filter((_, i) => i !== idx) }))}
+                                        className="ml-1 text-green-600 hover:text-green-900 font-bold"
+                                    >
+                                        ×
+                                    </button>
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                    <p className="text-xs text-gray-500 mt-1">Add relevant tags to help customers find your product (e.g., organic, eco-friendly, bestseller)</p>
                 </div>
 
                 {/* Product Badges */}

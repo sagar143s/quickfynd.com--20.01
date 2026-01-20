@@ -23,6 +23,7 @@ const ProductSchema = new mongoose.Schema({
   allowReplacement: { type: Boolean, default: true },
   imageAspectRatio: { type: String, default: '1:1' },
   storeId: String,
+  tags: { type: [String], default: [] },
   // Frequently Bought Together fields
   enableFBT: { type: Boolean, default: false },
   fbtProductIds: { type: [String], default: [] },
